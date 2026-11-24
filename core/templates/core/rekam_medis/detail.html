@@ -1,0 +1,82 @@
+{% extends "core/base.html" %}
+{% load static %}
+{% block title %}{{ patient.nama }} · Rekam Medis{% endblock %}
+{% block content %}
+<div class="page-head page-head-tight">
+  <a class="back-link" href="{% url 'rm_list' %}"><svg class="icon"><use href="#i-arrow-left"/></svg> Daftar pasien</a>
+  <div class="page-actions">
+    <a class="btn btn-secondary btn-sm" href="{% url 'kartu_cetak' patient.id %}?cetak=1" target="_blank" rel="noopener"
+       title="Cetak kartu periksa (seukuran kartu ATM) dengan QR untuk pendaftaran"><svg class="icon"><use href="#i-printer"/></svg> Cetak kartu</a>
+    {% if can.patient_edit %}
+    <a class="btn btn-secondary btn-sm" href="{% url 'rm_edit' patient.id %}"><svg class="icon"><use href="#i-pencil"/></svg> Ubah data pasien</a>
+    {% endif %}
+  </div>
+</div>
+
+{% include "core/_identity_box.html" with show_details=True %}
+
+<div class="tabs tabs-panel" data-tabs role="tablist">
+  {% if can.clinical_read %}
+  <button type="button" class="tab active" data-tab="soap" role="tab">SOAP</button>
+  {% else %}
+  <button type="button" class="tab active" data-tab="kunjungan" role="tab">Kunjungan</button>
+  {% endif %}
+  {% if can.penunjang %}
+  <button type="button" class="tab" data-tab="penunjang" role="tab">Penunjang <span class="tab-count" data-penunjang-count>{{ penunjang_count }}</span></button>
+  {% endif %}
+  {% if can.clinical_read %}
+  <button type="button" class="tab" data-tab="tindakan" role="tab">Tindakan</button>
+  {% endif %}
+</div>
+
+{% if can.clinical_read %}
+<div data-panel="soap">
+  <section class="card riwayat-card">
+    <div class="card-head">
+      <h3>Riwayat</h3>
+      {% if riwayat %}<span class="muted small">{{ riwayat|length }} kunjungan · klik baris untuk teks lengkap</span>{% endif %}
+    </div>
+    {% include "core/_riwayat.html" with copyable=False %}
+  </section>
+</div>
+{% else %}
+<div data-panel="kunjungan">
+  <section class="card">
+    <div class="table-wrap">
+      <table class="table">
+        <thead><tr><th>Tanggal</th><th>No. antrian</th><th>Dokter</th><th>Status</th></tr></thead>
+        <tbody>
+          {% for v in kunjungan %}
+          <tr><td class="mono">{{ v.tanggal|date:"d-m-Y" }}</td><td>{{ v.no_antrian }}</td><td>{{ v.doctor }}</td><td><span class="badge badge-{{ v.status_key }}">{{ v.status_label }}</span></td></tr>
+          {% empty %}
+          <tr class="empty-row"><td colspan="4"><div class="empty">Belum ada kunjungan.</div></td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </section>
+</div>
+{% endif %}
+
+{% if can.penunjang %}
+<div data-panel="penunjang" hidden>
+  <section class="card">{% include "core/_penunjang.html" %}</section>
+</div>
+{% endif %}
+
+{% if can.clinical_read %}
+<div data-panel="tindakan" hidden>
+  <section class="card riwayat-card">
+    <div class="card-head">
+      <h3>Riwayat tindakan</h3>
+      {% if riwayat_tindakan %}<span class="muted small">{{ riwayat_tindakan|length }} kunjungan</span>{% endif %}
+    </div>
+    {% include "core/_riwayat_tindakan.html" with copyable=False %}
+  </section>
+</div>
+{% endif %}
+{% endblock %}
+{% block scripts %}
+<script src="{% static 'core/foto.js' %}"></script>
+{% if can.penunjang %}<script src="{% static 'core/penunjang.js' %}"></script>{% endif %}
+{% endblock %}

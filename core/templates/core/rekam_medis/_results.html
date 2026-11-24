@@ -1,0 +1,37 @@
+{% load emr %}<template data-live-update="#rm-count">{% include "core/rekam_medis/_count.html" %}</template>
+<div class="table-wrap">
+  <table class="table table-patients">
+    <thead>
+      <tr>
+        <th><a class="sort-link{% if sort == 'rm' or sort == 'rm_desc' %} active{% endif %}" href="{% qs sort=rm_next %}" title="Urut waktu pendaftaran">No. RM{% if sort == 'rm' %} ↑{% elif sort == 'rm_desc' %} ↓{% endif %}</a></th>
+        <th><a class="sort-link{% if sort == 'nama' or sort == 'nama_desc' %} active{% endif %}" href="{% qs sort=nama_next %}">Nama{% if sort == 'nama' %} ↑{% elif sort == 'nama_desc' %} ↓{% endif %}</a></th>
+        <th>JK / Umur</th>
+        <th>Alamat</th>
+        <th>NIK</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for p in page_obj %}
+      <tr class="row-select" data-dblhref="{% url 'rm_detail' p.id %}" tabindex="0">
+        <td class="mono">{{ p.no_rm }}</td>
+        <td class="cell-name">{{ p.nama }}</td>
+        <td>{{ p.jk_umur }}</td>
+        <td class="cell-addr">{{ p.alamat }}</td>
+        <td class="mono">{% if p.nik %}{{ p.nik }}{% else %}<span class="muted">—</span>{% endif %}</td>
+      </tr>
+      {% empty %}
+      <tr class="empty-row"><td colspan="5"><div class="empty">{% if q %}Tidak ada pasien yang cocok.{% else %}Belum ada data pasien.{% endif %}</div></td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+<div class="card-foot">
+  <span class="hint">Klik dua kali pada baris (atau pilih lalu Enter) untuk membuka riwayat dan penunjang.</span>
+  {% if page_obj.paginator.num_pages > 1 %}
+  <nav class="pager" aria-label="Halaman">
+    {% if page_obj.has_previous %}<a class="btn btn-icon" href="{% qs page=page_obj.previous_page_number %}" aria-label="Sebelumnya"><svg class="icon"><use href="#i-chevron-left"/></svg></a>{% endif %}
+    <span>Hal. {{ page_obj.number }} / {{ page_obj.paginator.num_pages }}</span>
+    {% if page_obj.has_next %}<a class="btn btn-icon" href="{% qs page=page_obj.next_page_number %}" aria-label="Berikutnya"><svg class="icon"><use href="#i-chevron-right"/></svg></a>{% endif %}
+  </nav>
+  {% endif %}
+</div>

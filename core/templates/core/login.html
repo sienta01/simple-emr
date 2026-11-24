@@ -1,0 +1,39 @@
+{% load static %}<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Masuk · {{ CLINIC_NAME }}</title>
+  <link rel="icon" href="{% static 'core/favicon.svg' %}" type="image/svg+xml">
+  {% include "core/_theme_init.html" %}
+  <link rel="stylesheet" href="{% static 'core/app.css' %}">
+</head>
+<body class="auth-page">
+{% include "core/_icons.html" %}
+<main class="auth-card">
+  <div class="auth-brand">
+    <span class="brand-mark brand-mark-lg"><svg class="icon"><use href="#i-cross"/></svg></span>
+    <div>
+      <h1>{{ CLINIC_NAME }}</h1>
+      <p>Rekam Medis Elektronik</p>
+    </div>
+  </div>
+  <form method="post" novalidate>
+    {% csrf_token %}
+    {% if form.non_field_errors %}
+      <div class="alert alert-error">{% for e in form.non_field_errors %}{{ e }}{% endfor %}</div>
+    {% endif %}
+    <div class="field">
+      <label for="{{ form.username.id_for_label }}">Nama pengguna</label>
+      {{ form.username }}
+    </div>
+    <div class="field">
+      <label for="{{ form.password.id_for_label }}">Kata sandi</label>
+      {{ form.password }}
+    </div>
+    <input type="hidden" name="next" value="{{ next }}">
+    <button type="submit" class="btn btn-primary btn-block btn-lg">Masuk</button>
+  </form>
+</main>
+</body>
+</html>

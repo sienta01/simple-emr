@@ -1,0 +1,9 @@
+{% extends "core/base.html" %}
+{% block title %}Belum ada akses{% endblock %}
+{% block content %}
+<div class="empty-state">
+  <svg class="icon icon-xl"><use href="#i-alert"/></svg>
+  <h1>Akun Anda belum diberi peran</h1>
+  <p>Hubungi admin klinik agar akun <b>{{ user.username }}</b> diberi peran di menu Pengguna.</p>
+</div>
+{% endblock %}

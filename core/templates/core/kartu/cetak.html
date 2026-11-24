@@ -1,0 +1,68 @@
+{% load static %}<!doctype html>
+<html lang="id" data-kertas="kartu">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Kartu periksa {{ patient.no_rm }} · {{ patient.nama }}</title>
+  <link rel="icon" href="{% static 'core/favicon.svg' %}" type="image/svg+xml">
+  {% include "core/_theme_init.html" %}
+  <link rel="stylesheet" href="{% static 'core/app.css' %}">
+  <link rel="stylesheet" href="{% static 'core/kartu.css' %}">
+  {# Paper size; core/static/core/kartu.js swaps it for A4 when that was chosen on this PC. #}
+  <style id="page-size">@page { size: 85.6mm 53.98mm; margin: 0; }</style>
+</head>
+<body class="kartu-page"{% if autoprint %} data-autoprint{% endif %}>
+{% include "core/_icons.html" %}
+<header class="kartu-bar">
+  <div class="kartu-bar-title">
+    <b>Kartu periksa</b>
+    <span>{{ patient.nama }} · RM {{ patient.no_rm }}</span>
+  </div>
+  <div class="kartu-paper">
+    <span class="kartu-paper-label" id="kertas-label">Kertas</span>
+    <div class="kategori-picker" role="radiogroup" aria-labelledby="kertas-label">
+      <label class="seg"><input type="radio" name="kertas" value="kartu" checked><span>Kartu 85,6 × 54 mm</span></label>
+      <label class="seg"><input type="radio" name="kertas" value="a4"><span>A4, digunting</span></label>
+    </div>
+  </div>
+  <button type="button" class="btn btn-primary" data-print><svg class="icon"><use href="#i-printer"/></svg> Cetak</button>
+</header>
+
+<main class="kartu-stage">
+  <div class="kartu-zoom">
+    <article class="kartu" aria-label="Kartu periksa {{ patient.nama }}">
+      <header class="k-head">
+        <div class="k-qr">{{ qr_svg }}</div>
+        <div class="k-praktek">
+          <div class="k-dokter" data-fit>{{ kartu_nama }}</div>
+          {% if kartu_alamat %}<div class="k-alamat" data-fit>{{ kartu_alamat }}</div>{% endif %}
+          {% if kartu_wa %}
+          <div class="k-wa">
+            {# WhatsApp glyph (Simple Icons, CC0) #}
+            <svg viewBox="0 0 24 24" role="img" aria-label="WhatsApp"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg>
+            <span>{{ kartu_wa }}</span>
+          </div>
+          {% endif %}
+        </div>
+      </header>
+      <div class="k-rule" aria-hidden="true"></div>
+      <h1 class="k-title">KARTU PERIKSA</h1>
+      <dl class="k-data">
+        <dt>MR</dt><dd class="k-rm">{{ patient.no_rm }}</dd>
+        <dt>Nama</dt><dd class="k-nama" data-fit="1,2">{{ patient.nama }}</dd>
+        <dt>Tgl. Lahir</dt><dd>{{ patient.tanggal_lahir|date:"d-m-Y" }}</dd>
+        {# RT / RW are part of the address text when the patient gave them. #}
+        <dt>Alamat</dt><dd class="k-alamat-px" data-fit="2">{{ patient.alamat }}</dd>
+      </dl>
+      <p class="k-note">Kartu ini harap dibawa setiap kali periksa</p>
+    </article>
+  </div>
+  <p class="kartu-help">
+    <b>Kartu 85,6 × 54 mm</b>: untuk printer kartu atau kertas seukuran kartu ATM.
+    <b>A4</b>: kartu dicetak seukuran asli di pojok kiri atas, lalu digunting mengikuti garis tipis.
+    Di jendela cetak, pilih skala 100% (bukan “Fit to page”) dan matikan “Headers and footers”.
+  </p>
+</main>
+<script src="{% static 'core/kartu.js' %}"></script>
+</body>
+</html>

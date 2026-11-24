@@ -1,0 +1,31 @@
+{% extends "core/base.html" %}
+{% block title %}Pengguna{% endblock %}
+{% block content %}
+<div class="page-head">
+  <div>
+    <h1>Pengguna</h1>
+    <p class="page-sub">Akun dan peran staf klinik</p>
+  </div>
+  <a class="btn btn-primary" href="{% url 'user_create' %}"><svg class="icon"><use href="#i-plus"/></svg> Tambah pengguna</a>
+</div>
+<section class="card">
+  <div class="table-wrap">
+    <table class="table">
+      <thead><tr><th>Nama</th><th>Nama pengguna</th><th>Peran</th><th>Status</th><th>Login terakhir</th><th class="col-actions"><span class="sr-only">Aksi</span></th></tr></thead>
+      <tbody>
+        {% for u in users %}
+        <tr class="{% if not u.is_active %}is-cancelled{% endif %}">
+          <td class="cell-name">{{ u }}</td>
+          <td class="mono">{{ u.username }}</td>
+          <td>{% for label in u.role_labels %}<span class="badge badge-role">{{ label }}</span> {% empty %}<span class="text-warn">belum ada</span>{% endfor %}</td>
+          <td>{% if u.is_active %}<span class="badge badge-sudah">Aktif</span>{% else %}<span class="badge badge-batal">Nonaktif</span>{% endif %}</td>
+          <td>{% if u.last_login %}{{ u.last_login|date:"j M Y H:i" }}{% else %}<span class="muted">—</span>{% endif %}</td>
+          <td class="col-actions"><a class="btn btn-ghost btn-sm" href="{% url 'user_edit' u.id %}"><svg class="icon"><use href="#i-pencil"/></svg> Ubah</a></td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  <div class="card-foot"><span class="hint">Data master lain (ICD-10, log audit) tersedia di <a href="{% url 'admin:index' %}">halaman admin</a>.</span></div>
+</section>
+{% endblock %}

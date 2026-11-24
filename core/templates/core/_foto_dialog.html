@@ -1,0 +1,40 @@
+{# Patient photo dialog (core/static/core/foto.js); once per page, opened by any [data-foto-open][data-patient-id] square #}
+<dialog class="modal modal-sm" id="foto-dialog" aria-labelledby="foto-title"
+        data-upload-url="{% url 'api_patient_foto' 0 %}"
+        data-delete-url="{% url 'api_patient_foto_delete' 0 %}"
+        data-max-mb="{{ MAX_UPLOAD_MB }}">
+  <div class="modal-head">
+    <h2 id="foto-title">Foto · <span data-foto-name></span></h2>
+    <button type="button" class="icon-btn" data-close aria-label="Tutup"><svg class="icon"><use href="#i-x"/></svg></button>
+  </div>
+  <div class="modal-body">
+    <div class="foto-stage">
+      <img data-foto-current alt="" hidden>
+      <video data-foto-video autoplay playsinline muted hidden></video>
+      <canvas data-foto-shot hidden></canvas>
+      <div class="foto-placeholder" data-foto-placeholder>
+        <svg class="icon icon-xl"><use href="#i-user"/></svg>
+        <span>Belum ada foto</span>
+      </div>
+    </div>
+    <select class="input foto-camera" data-foto-camera aria-label="Pilih kamera" hidden></select>
+    <div class="alert alert-warn foto-msg" data-foto-msg hidden></div>
+  </div>
+  {% if can.patient_edit %}
+  <div class="modal-actions" data-foto-mode="idle">
+    <button type="button" class="btn btn-ghost foto-delete" data-foto-delete hidden><svg class="icon"><use href="#i-trash"/></svg> Hapus</button>
+    <button type="button" class="btn btn-secondary" data-foto-pick><svg class="icon"><use href="#i-upload"/></svg> Unggah foto</button>
+    <button type="button" class="btn btn-primary" data-foto-camera-start><svg class="icon"><use href="#i-camera"/></svg> Kamera</button>
+  </div>
+  <div class="modal-actions" data-foto-mode="live" hidden>
+    <button type="button" class="btn btn-ghost" data-foto-cancel>Batal</button>
+    <button type="button" class="btn btn-primary" data-foto-snap><svg class="icon"><use href="#i-camera"/></svg> Ambil foto</button>
+  </div>
+  <div class="modal-actions" data-foto-mode="shot" hidden>
+    <button type="button" class="btn btn-ghost" data-foto-retake><svg class="icon"><use href="#i-rotate-ccw"/></svg> Ulangi</button>
+    <button type="button" class="btn btn-primary" data-foto-save><svg class="icon"><use href="#i-check"/></svg> Simpan foto</button>
+  </div>
+  <input type="file" accept="image/*,.heic,.heif" hidden data-foto-file>
+  <input type="file" accept="image/*" capture="user" hidden data-foto-capture>
+  {% endif %}
+</dialog>

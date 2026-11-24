@@ -1,0 +1,27 @@
+{% extends "core/base.html" %}
+{% load emr %}
+{% block title %}Pemeriksaan{% endblock %}
+{% block content %}
+<div class="page-head">
+  <div>
+    <h1>Pemeriksaan</h1>
+    <p class="page-sub">Klik baris pasien untuk mulai memeriksa.</p>
+  </div>
+</div>
+
+<section class="card">
+  <div class="card-toolbar">
+    {% include "core/visits/_date_nav.html" %}
+    {% if is_doctor %}
+    <div class="segmented" role="group" aria-label="Filter dokter">
+      <a href="{% qs dokter='saya' %}" class="{% if dokter_filter == 'saya' %}active{% endif %}">Pasien saya</a>
+      <a href="{% qs dokter='semua' %}" class="{% if dokter_filter == 'semua' %}active{% endif %}">Semua dokter</a>
+    </div>
+    {% endif %}
+  </div>
+  <div data-autorefresh="{% qs partial=1 %}" data-version="{{ version }}"
+       data-version-url="{% url 'queue_version' %}?tanggal={{ tanggal|date:'Y-m-d' }}">
+    {% include "core/visits/_list_body.html" %}
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,236 @@
+code,name,alias
+A01.0,Typhoid fever,Demam tifoid
+A03.9,"Shigellosis, unspecified","Disentri basiler (shigelosis), tidak spesifik"
+A06.0,Acute amoebic dysentery,Disentri amuba akut
+A09,Other gastroenteritis and colitis of infectious and unspecified origin,Diare dan gastroenteritis diduga infeksi
+A15.0,"Tuberculosis of lung, confirmed by sputum microscopy with or without culture",Tuberkulosis paru terkonfirmasi mikroskopis sputum
+A16.2,"Tuberculosis of lung, without mention of bacteriological or histological confirmation",Tuberkulosis paru tanpa konfirmasi bakteriologis atau histologis
+A27.9,"Leptospirosis, unspecified",Leptospirosis
+A30.9,"Leprosy, unspecified",Kusta (lepra)
+A37.9,"Whooping cough, unspecified",Pertusis (batuk rejan)
+A46,Erysipelas,Erisipelas
+A49.9,"Bacterial infection, unspecified","Infeksi bakteri, tidak spesifik"
+A63.0,Anogenital (venereal) warts,Kondiloma akuminata (kutil anogenital)
+A90,Dengue fever [classical dengue],Demam dengue
+A91,Dengue haemorrhagic fever,Demam berdarah dengue
+A92.0,Chikungunya virus disease,Chikungunya
+B00.1,Herpesviral vesicular dermatitis,Herpes simpleks (dermatitis vesikular herpes)
+B01.9,Varicella without complication,Varisela (cacar air) tanpa komplikasi
+B02.9,Zoster without complication,Herpes zoster tanpa komplikasi
+B05.9,Measles without complication,Campak tanpa komplikasi
+B06.9,Rubella without complication,Rubela tanpa komplikasi
+B07,Viral warts,Veruka (kutil virus)
+B08.1,Molluscum contagiosum,Moluskum kontagiosum
+B08.4,Enteroviral vesicular stomatitis with exanthem,"Penyakit tangan, kaki, dan mulut (HFMD)"
+B15.9,Hepatitis A without hepatic coma,Hepatitis A tanpa koma hepatik
+B16.9,Acute hepatitis B without delta-agent and without hepatic coma,Hepatitis B akut
+B18.1,Chronic viral hepatitis B without delta-agent,Hepatitis B kronik
+B20,Human immunodeficiency virus [HIV] disease resulting in infectious and parasitic diseases,Penyakit HIV
+B26.9,Mumps without complication,Parotitis epidemika (gondongan)
+B34.9,"Viral infection, unspecified","Infeksi virus, tidak spesifik"
+B35.0,Tinea barbae and tinea capitis,Tinea kapitis dan tinea barbae
+B35.1,Tinea unguium,Tinea unguium (onikomikosis)
+B35.3,Tinea pedis,Tinea pedis
+B35.4,Tinea corporis,Tinea korporis
+B35.6,Tinea cruris,Tinea kruris
+B36.0,Pityriasis versicolor,Pitiriasis versikolor (panu)
+B37.0,Candidal stomatitis,Kandidiasis oral
+B37.2,Candidiasis of skin and nail,Kandidiasis kulit dan kuku
+B37.3,Candidiasis of vulva and vagina,Kandidiasis vulvovaginal
+B50.9,"Plasmodium falciparum malaria, unspecified",Malaria falsiparum
+B54,Unspecified malaria,"Malaria, tidak spesifik"
+B76.9,"Hookworm disease, unspecified",Penyakit cacing tambang
+B77.9,"Ascariasis, unspecified",Askariasis
+B80,Enterobiasis,Enterobiasis (cacing kremi)
+B82.0,"Intestinal helminthiasis, unspecified","Helmintiasis usus, tidak spesifik"
+B85.0,Pediculosis due to Pediculus humanus capitis,Pedikulosis kapitis (kutu rambut)
+B86,Scabies,Skabies
+D17.9,"Benign lipomatous neoplasm, unspecified",Lipoma
+D25.9,"Leiomyoma of uterus, unspecified",Mioma uteri
+D50.9,"Iron deficiency anaemia, unspecified",Anemia defisiensi besi
+D64.9,"Anaemia, unspecified","Anemia, tidak spesifik"
+D69.6,"Thrombocytopenia, unspecified",Trombositopenia
+E03.9,"Hypothyroidism, unspecified",Hipotiroidisme
+E04.9,"Nontoxic goitre, unspecified",Struma nontoksik
+E05.9,"Thyrotoxicosis, unspecified",Tirotoksikosis (hipertiroidisme)
+E10.9,Type 1 diabetes mellitus without complications,Diabetes melitus tipe 1 tanpa komplikasi
+E11.2,Type 2 diabetes mellitus with renal complications,Diabetes melitus tipe 2 dengan komplikasi ginjal
+E11.3,Type 2 diabetes mellitus with ophthalmic complications,Diabetes melitus tipe 2 dengan komplikasi mata
+E11.4,Type 2 diabetes mellitus with neurological complications,Diabetes melitus tipe 2 dengan komplikasi neurologis
+E11.5,Type 2 diabetes mellitus with peripheral circulatory complications,Diabetes melitus tipe 2 dengan komplikasi sirkulasi perifer
+E11.9,Type 2 diabetes mellitus without complications,Diabetes melitus tipe 2 tanpa komplikasi
+E14.9,Unspecified diabetes mellitus without complications,Diabetes melitus tidak spesifik tanpa komplikasi
+E16.2,"Hypoglycaemia, unspecified",Hipoglikemia
+E46,Unspecified protein-energy malnutrition,Malnutrisi energi protein
+E66.9,"Obesity, unspecified",Obesitas
+E78.0,Pure hypercholesterolaemia,Hiperkolesterolemia murni
+E78.5,"Hyperlipidaemia, unspecified",Hiperlipidemia (dislipidemia)
+E79.0,Hyperuricaemia without signs of inflammatory arthritis and tophaceous disease,Hiperurisemia tanpa gejala
+E86,Volume depletion,Dehidrasi (deplesi volume)
+E87.6,Hypokalaemia,Hipokalemia
+F20.9,"Schizophrenia, unspecified",Skizofrenia
+F32.9,"Depressive episode, unspecified",Episode depresi
+F41.1,Generalized anxiety disorder,Gangguan cemas menyeluruh
+F41.9,"Anxiety disorder, unspecified",Gangguan cemas
+F51.0,Nonorganic insomnia,Insomnia nonorganik
+G40.9,"Epilepsy, unspecified",Epilepsi
+G43.9,"Migraine, unspecified",Migren
+G44.2,Tension-type headache,Nyeri kepala tipe tegang (tension-type headache)
+G47.0,Disorders of initiating and maintaining sleep [insomnias],Insomnia
+G51.0,Bell palsy,Bell's palsy
+G56.0,Carpal tunnel syndrome,Sindrom terowongan karpal (CTS)
+G62.9,"Polyneuropathy, unspecified",Polineuropati
+H00.0,Hordeolum and other deep inflammation of eyelid,Hordeolum
+H00.1,Chalazion,Kalazion
+H01.0,Blepharitis,Blefaritis
+H10.1,Acute atopic conjunctivitis,Konjungtivitis atopik akut
+H10.9,"Conjunctivitis, unspecified",Konjungtivitis
+H11.0,Pterygium,Pterigium
+H25.9,"Senile cataract, unspecified",Katarak senilis
+H40.9,"Glaucoma, unspecified",Glaukoma
+H52.1,Myopia,Miopia
+H52.4,Presbyopia,Presbiopia
+H57.1,Ocular pain,Nyeri mata
+H60.9,"Otitis externa, unspecified",Otitis eksterna
+H61.2,Impacted cerumen,Serumen prop (serumen impaksi)
+H65.9,"Nonsuppurative otitis media, unspecified",Otitis media nonsupuratif
+H66.0,Acute suppurative otitis media,Otitis media supuratif akut
+H66.3,Other chronic suppurative otitis media,Otitis media supuratif kronik
+H66.9,"Otitis media, unspecified",Otitis media
+H81.1,Benign paroxysmal vertigo,Vertigo posisional paroksismal jinak (BPPV)
+H91.9,"Hearing loss, unspecified",Gangguan pendengaran
+H93.1,Tinnitus,Tinitus
+I10,Essential (primary) hypertension,Hipertensi esensial (primer)
+I11.9,Hypertensive heart disease without (congestive) heart failure,Penyakit jantung hipertensi tanpa gagal jantung
+I20.9,"Angina pectoris, unspecified",Angina pektoris
+I21.9,"Acute myocardial infarction, unspecified",Infark miokard akut
+I25.1,Atherosclerotic heart disease,Penyakit jantung aterosklerotik
+I48,Atrial fibrillation and flutter,Fibrilasi dan flutter atrium
+I49.9,"Cardiac arrhythmia, unspecified",Aritmia jantung
+I50.9,"Heart failure, unspecified",Gagal jantung
+I63.9,"Cerebral infarction, unspecified",Infark serebral (stroke iskemik)
+I64,"Stroke, not specified as haemorrhage or infarction",Stroke tidak dinyatakan perdarahan atau infark
+I69.4,"Sequelae of stroke, not specified as haemorrhage or infarction",Gejala sisa stroke
+I83.9,Varicose veins of lower extremities without ulcer or inflammation,Varises tungkai
+I95.9,"Hypotension, unspecified",Hipotensi
+J00,Acute nasopharyngitis [common cold],Nasofaringitis akut (common cold)
+J01.9,"Acute sinusitis, unspecified",Sinusitis akut
+J02.9,"Acute pharyngitis, unspecified",Faringitis akut
+J03.9,"Acute tonsillitis, unspecified",Tonsilitis akut
+J04.0,Acute laryngitis,Laringitis akut
+J06.9,"Acute upper respiratory infection, unspecified",Infeksi saluran pernapasan atas akut (ISPA)
+J11.1,"Influenza with other respiratory manifestations, virus not identified","Influenza, virus tidak teridentifikasi"
+J18.9,"Pneumonia, unspecified",Pneumonia
+J20.9,"Acute bronchitis, unspecified",Bronkitis akut
+J21.9,"Acute bronchiolitis, unspecified",Bronkiolitis akut
+J30.4,"Allergic rhinitis, unspecified",Rinitis alergi
+J32.9,"Chronic sinusitis, unspecified",Sinusitis kronik
+J35.0,Chronic tonsillitis,Tonsilitis kronik
+J44.9,"Chronic obstructive pulmonary disease, unspecified",Penyakit paru obstruktif kronik (PPOK)
+J45.9,"Asthma, unspecified",Asma
+J46,Status asthmaticus,Status asmatikus
+K02.9,"Dental caries, unspecified",Karies gigi
+K04.0,Pulpitis,Pulpitis
+K04.7,Periapical abscess without sinus,Abses periapikal tanpa sinus
+K05.0,Acute gingivitis,Gingivitis akut
+K05.1,Chronic gingivitis,Gingivitis kronik
+K05.3,Chronic periodontitis,Periodontitis kronik
+K12.0,Recurrent oral aphthae,Stomatitis aftosa rekuren (sariawan)
+K21.0,Gastro-oesophageal reflux disease with oesophagitis,Penyakit refluks gastroesofageal dengan esofagitis
+K21.9,Gastro-oesophageal reflux disease without oesophagitis,Penyakit refluks gastroesofageal (GERD)
+K25.9,"Gastric ulcer, unspecified as acute or chronic, without haemorrhage or perforation",Ulkus lambung
+K29.7,"Gastritis, unspecified",Gastritis
+K30,Functional dyspepsia,Dispepsia fungsional
+K35.8,"Acute appendicitis, other and unspecified",Apendisitis akut
+K40.9,"Unilateral or unspecified inguinal hernia, without obstruction or gangrene",Hernia inguinalis
+K52.9,"Noninfective gastroenteritis and colitis, unspecified",Gastroenteritis dan kolitis noninfeksi
+K58.9,Irritable bowel syndrome without diarrhoea,Sindrom iritasi usus besar (IBS)
+K59.0,Constipation,Konstipasi
+K64.9,"Haemorrhoids, unspecified",Hemoroid
+K76.0,"Fatty (change of) liver, not elsewhere classified",Perlemakan hati (fatty liver)
+K80.2,Calculus of gallbladder without cholecystitis,Batu kandung empedu tanpa kolesistitis
+L01.0,Impetigo [any organism] [any site],Impetigo
+L02.9,"Cutaneous abscess, furuncle and carbuncle, unspecified","Abses kulit, furunkel, dan karbunkel"
+L03.9,"Cellulitis, unspecified",Selulitis
+L20.9,"Atopic dermatitis, unspecified",Dermatitis atopik
+L21.9,"Seborrhoeic dermatitis, unspecified",Dermatitis seboroik
+L22,Diaper [napkin] dermatitis,Dermatitis popok
+L23.9,"Allergic contact dermatitis, unspecified cause",Dermatitis kontak alergi
+L24.9,"Irritant contact dermatitis, unspecified cause",Dermatitis kontak iritan
+L25.9,"Unspecified contact dermatitis, unspecified cause","Dermatitis kontak, tidak spesifik"
+L29.9,"Pruritus, unspecified",Pruritus
+L30.9,"Dermatitis, unspecified",Dermatitis
+L40.9,"Psoriasis, unspecified",Psoriasis
+L50.9,"Urticaria, unspecified",Urtikaria
+L60.0,Ingrowing nail,Unguis inkarnatus (kuku tumbuh ke dalam)
+L70.0,Acne vulgaris,Akne vulgaris
+L72.0,Epidermal cyst,Kista epidermal
+L74.0,Miliaria rubra,Miliaria rubra (biang keringat)
+L84,Corns and callosities,Kalus dan klavus (kapalan dan mata ikan)
+M06.9,"Rheumatoid arthritis, unspecified",Artritis reumatoid
+M10.9,"Gout, unspecified",Gout (pirai)
+M17.9,"Gonarthrosis, unspecified",Osteoartritis lutut
+M19.9,"Arthrosis, unspecified",Osteoartritis
+M25.5,Pain in joint,Nyeri sendi (artralgia)
+M54.2,Cervicalgia,Nyeri leher (servikalgia)
+M54.4,Lumbago with sciatica,Nyeri punggung bawah dengan iskialgia
+M54.5,Low back pain,Nyeri punggung bawah (low back pain)
+M62.6,Muscle strain,Strain otot
+M75.0,Adhesive capsulitis of shoulder,Kapsulitis adhesif bahu (frozen shoulder)
+M77.1,Lateral epicondylitis,Epikondilitis lateral (tennis elbow)
+M79.1,Myalgia,Mialgia
+M81.9,"Osteoporosis, unspecified",Osteoporosis
+N10,Acute tubulo-interstitial nephritis,Pielonefritis akut
+N18.9,"Chronic kidney disease, unspecified",Penyakit ginjal kronik
+N20.0,Calculus of kidney,Batu ginjal
+N23,Unspecified renal colic,Kolik renal
+N30.0,Acute cystitis,Sistitis akut
+N39.0,"Urinary tract infection, site not specified",Infeksi saluran kemih
+N40,Hyperplasia of prostate,Hiperplasia prostat
+N76.0,Acute vaginitis,Vaginitis akut
+N91.2,"Amenorrhoea, unspecified",Amenore
+N92.0,Excessive and frequent menstruation with regular cycle,Menoragia
+N94.6,"Dysmenorrhoea, unspecified",Dismenore
+N95.1,Menopausal and female climacteric states,Menopause
+O13,Gestational [pregnancy-induced] hypertension,Hipertensi gestasional
+O20.0,Threatened abortion,Abortus iminens
+O21.0,Mild hyperemesis gravidarum,Hiperemesis gravidarum ringan
+O24.4,Diabetes mellitus arising in pregnancy,Diabetes melitus gestasional
+O99.0,"Anaemia complicating pregnancy, childbirth and the puerperium",Anemia dalam kehamilan
+P59.9,"Neonatal jaundice, unspecified",Ikterus neonatorum
+R03.0,"Elevated blood-pressure reading, without diagnosis of hypertension",Tekanan darah tinggi tanpa diagnosis hipertensi
+R05,Cough,Batuk
+R06.0,Dyspnoea,Dispnea (sesak napas)
+R07.4,"Chest pain, unspecified",Nyeri dada
+R10.4,Other and unspecified abdominal pain,Nyeri perut
+R11,Nausea and vomiting,Mual dan muntah
+R21,Rash and other nonspecific skin eruption,Ruam kulit
+R42,Dizziness and giddiness,Pusing (dizziness)
+R50.9,"Fever, unspecified",Demam
+R51,Headache,Nyeri kepala (sefalgia)
+R53,Malaise and fatigue,Malaise dan kelelahan
+R55,Syncope and collapse,Sinkop
+R56.0,Febrile convulsions,Kejang demam
+R63.0,Anorexia,Anoreksia (nafsu makan menurun)
+R73.9,"Hyperglycaemia, unspecified",Hiperglikemia
+S06.0,Concussion,Komosio serebri (gegar otak)
+S93.4,Sprain and strain of ankle,Terkilir pergelangan kaki
+T14.0,Superficial injury of unspecified body region,"Cedera superfisial (lecet, memar), regio tidak spesifik"
+T14.1,Open wound of unspecified body region,"Luka terbuka, regio tidak spesifik"
+T14.2,Fracture of unspecified body region,"Fraktur, regio tidak spesifik"
+T15.9,"Foreign body on external eye, part unspecified",Benda asing di mata
+T16,Foreign body in ear,Benda asing di telinga
+T17.1,Foreign body in nostril,Benda asing di hidung
+T30.0,"Burn of unspecified body region, unspecified degree","Luka bakar, regio tidak spesifik"
+T63.4,Toxic effect: venom of other arthropods,Sengatan serangga berbisa
+T78.4,"Allergy, unspecified","Alergi, tidak spesifik"
+T88.7,Unspecified adverse effect of drug or medicament,Reaksi efek samping obat
+U07.1,"COVID-19, virus identified","COVID-19, virus teridentifikasi"
+Z00.0,General medical examination,Pemeriksaan kesehatan umum
+Z02.7,Issue of medical certificate,Pembuatan surat keterangan medis
+Z09.9,Follow-up examination after unspecified treatment for other conditions,Pemeriksaan lanjutan pascapengobatan (kontrol)
+Z30.9,"Contraceptive management, unspecified",Pelayanan kontrasepsi (KB)
+Z34.9,"Supervision of normal pregnancy, unspecified",Pengawasan kehamilan normal (ANC)
+Z48.0,Attention to surgical dressings and sutures,Perawatan luka dan jahitan (ganti balutan)
+Z71.9,"Counselling, unspecified",Konseling
+Z76.0,Issue of repeat prescription,Pemberian resep ulang

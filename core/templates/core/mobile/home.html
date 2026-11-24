@@ -1,0 +1,31 @@
+{% extends "core/mobile/base.html" %}
+{% load static %}
+{% block title %}Pilih pasien{% endblock %}
+{% block content %}
+<div class="m-search">
+  <div class="input-icon">
+    <svg class="icon"><use href="#i-search"/></svg>
+    <input type="search" class="input input-lg" placeholder="Cari nama, No. RM, atau NIK" autocomplete="off"
+           data-m-search="{% url 'api_patient_search' %}" data-patient-url="{% url 'mobile_upload' 0 %}" aria-label="Cari pasien">
+  </div>
+</div>
+<div class="m-list" data-m-results hidden></div>
+
+<h2 class="m-section" data-m-today>Pasien hari ini</h2>
+<div class="m-list" data-m-today>
+  {% for v in visits %}
+  <a class="m-patient" href="{% url 'mobile_upload' v.patient_id %}">
+    <span class="queue-no">{{ v.no_antrian }}</span>
+    <span class="m-patient-body">
+      <span class="m-patient-name">{{ v.patient.nama }}</span>
+      <span class="m-patient-sub">RM {{ v.patient.no_rm }} · {{ v.patient.jk_umur }} · {{ v.doctor }}</span>
+    </span>
+    <svg class="icon"><use href="#i-chevron-right"/></svg>
+  </a>
+  {% empty %}
+  <p class="empty">Belum ada pasien terdaftar hari ini. Cari pasien dengan kolom di atas.</p>
+  {% endfor %}
+</div>
+{% if nav %}<p class="m-foot"><a href="{% url 'home' %}">Buka tampilan desktop</a></p>{% endif %}
+{% endblock %}
+{% block scripts %}<script src="{% static 'core/mobile.js' %}"></script>{% endblock %}

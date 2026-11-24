@@ -1,0 +1,29 @@
+{% if riwayat_tindakan %}
+<div class="table-wrap riwayat-wrap">
+  <table class="table riwayat riwayat-tindakan">
+    <thead>
+      <tr>
+        <th class="col-date">Tgl</th>
+        <th>ICD-9-CM</th>
+        <th class="col-author">Penulis</th>
+      </tr>
+    </thead>
+    {% for v in riwayat_tindakan %}
+    <tbody class="riwayat-visit" data-visit="{{ v.id }}">
+      <tr>
+        <td class="col-date"><div class="mono">{{ v.tanggal|date:"d-m-Y" }}</div></td>
+        <td>
+          {% for p in v.procedures.all %}<span class="dx">{% if p.code %}<b>{{ p.code }}</b> {% endif %}{{ p.name }}</span>{% endfor %}
+          {% if copyable %}
+          <button type="button" class="copy-btn tindakan-copy" data-copy="px" title="Salin tindakan ini ke form"><svg class="icon"><use href="#i-copy"/></svg> Salin</button>
+          {% endif %}
+        </td>
+        <td class="col-author">{% include "core/_riwayat_author.html" %}</td>
+      </tr>
+    </tbody>
+    {% endfor %}
+  </table>
+</div>
+{% else %}
+<div class="empty">Belum ada riwayat tindakan.</div>
+{% endif %}

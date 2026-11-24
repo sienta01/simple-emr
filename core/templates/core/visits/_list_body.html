@@ -1,0 +1,58 @@
+{% load emr %}<div class="tabs" role="tablist">
+  {% for key, label, count in tabs %}
+  <a href="{% qs status=key %}" class="tab{% if key == status %} active{% endif %}" role="tab" aria-selected="{% if key == status %}true{% else %}false{% endif %}">
+    {{ label }} <span class="tab-count">{{ count }}</span>
+  </a>
+  {% endfor %}
+</div>
+<div class="table-wrap">
+  <table class="table table-visits">
+    <thead>
+      <tr>
+        <th class="col-queue">No. antrian</th>
+        <th>Nama</th>
+        <th>Alamat</th>
+        <th>No. RM</th>
+        <th>Status</th>
+        <th>Jam daftar</th>
+        {% if show_doctor %}<th>Dokter</th>{% endif %}
+        {% if can_cancel %}<th class="col-actions"><span class="sr-only">Aksi</span></th>{% endif %}
+      </tr>
+    </thead>
+    <tbody>
+      {% for v in visits %}
+      <tr class="{% if row_link and v.status != 'batal' %}row-link{% endif %}{% if v.status == 'batal' %} is-cancelled{% endif %}"
+          {% if row_link and v.status != 'batal' %}data-href="{% url 'pemeriksaan_detail' v.id %}" tabindex="0"{% endif %}>
+        <td class="col-queue"><span class="queue-no">{{ v.no_antrian }}</span></td>
+        <td>
+          <div class="cell-name">{{ v.patient.nama }}</div>
+          <div class="cell-sub">{{ v.patient.jk_umur }}</div>
+        </td>
+        <td class="cell-addr">{{ v.patient.alamat }}</td>
+        <td class="mono">{{ v.patient.no_rm }}</td>
+        <td>
+          <span class="badge badge-{{ v.status_key }}">{{ v.status_label }}</span>
+          {% if v.is_called %}<div class="cell-sub">{{ v.called_at|time:"H:i" }}</div>{% endif %}
+        </td>
+        <td class="mono">{{ v.registered_at|time:"H:i:s" }}</td>
+        {% if show_doctor %}<td>{{ v.doctor }}</td>{% endif %}
+        {% if can_cancel %}
+        <td class="col-actions">
+          {% if v.status == 'belum' %}
+          <button type="button" class="btn btn-ghost btn-sm" data-cancel-visit="{% url 'visit_cancel' v.id %}" data-name="{{ v.patient.nama }}">Batalkan</button>
+          {% endif %}
+        </td>
+        {% endif %}
+      </tr>
+      {% empty %}
+      <tr class="empty-row">
+        <td colspan="8">
+          <div class="empty">
+            {% if status == 'belum' %}Tidak ada pasien yang menunggu.{% elif status == 'sudah' %}Belum ada pasien yang selesai diperiksa.{% else %}Belum ada pasien terdaftar pada tanggal ini.{% endif %}
+          </div>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>

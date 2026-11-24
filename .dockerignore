@@ -1,0 +1,19 @@
+.git
+.venv
+venv
+__pycache__
+*.pyc
+.env
+data
+media
+staticfiles
+*.sqlite3
+.claude
+.github
+docs
+*.crt
+*.dump
+*.tgz
+Program Pasien Praktek
+**/*.dbf
+**/*.DBF

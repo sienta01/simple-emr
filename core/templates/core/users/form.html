@@ -1,0 +1,38 @@
+{% extends "core/base.html" %}
+{% block title %}{% if target.pk %}Ubah pengguna{% else %}Tambah pengguna{% endif %}{% endblock %}
+{% block content %}
+<div class="page-head page-head-tight">
+  <a class="back-link" href="{% url 'user_list' %}"><svg class="icon"><use href="#i-arrow-left"/></svg> Pengguna</a>
+</div>
+<section class="card card-narrow">
+  <div class="card-head"><h3>{% if target.pk %}Ubah pengguna {{ target }}{% else %}Tambah pengguna{% endif %}</h3></div>
+  <form method="post" novalidate autocomplete="off">
+    {% csrf_token %}
+    {% if form.non_field_errors %}<div class="alert alert-error">{{ form.non_field_errors|join:" " }}</div>{% endif %}
+    <div class="form-grid">
+      {% include "core/_field.html" with field=form.display_name extra_class="span-2" %}
+      {% include "core/_field.html" with field=form.username extra_class="span-2" %}
+      <div class="field span-2{% if form.roles.errors %} has-error{% endif %}">
+        <label>Peran</label>
+        <div class="role-grid">
+          {% for choice in form.roles %}
+          <label class="check-card">{{ choice.tag }} <span>{{ choice.choice_label }}</span></label>
+          {% endfor %}
+        </div>
+        <div class="help">{{ form.roles.help_text }}</div>
+        <div class="field-error">{{ form.roles.errors|join:" " }}</div>
+      </div>
+      {% include "core/_field.html" with field=form.password1 %}
+      {% include "core/_field.html" with field=form.password2 %}
+      <div class="field span-2{% if form.is_active.errors %} has-error{% endif %}">
+        <label class="check-inline">{{ form.is_active }} Akun aktif</label>
+        <div class="field-error">{{ form.is_active.errors|join:" " }}</div>
+      </div>
+    </div>
+    <div class="form-footer">
+      <a class="btn btn-ghost" href="{% url 'user_list' %}">Batal</a>
+      <button type="submit" class="btn btn-primary">Simpan</button>
+    </div>
+  </form>
+</section>
+{% endblock %}

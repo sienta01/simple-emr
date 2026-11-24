@@ -1,0 +1,99 @@
+<div class="penunjang{% if compact %} penunjang-compact{% endif %}" data-penunjang
+     data-list-url="{% url 'penunjang_list' patient.id %}"
+     data-upload-url="{% url 'penunjang_upload' patient.id %}"
+     data-reorder-url="{% url 'penunjang_reorder' patient.id %}"
+     data-update-url="{% url 'penunjang_update' 0 %}"
+     data-delete-url="{% url 'penunjang_delete' 0 %}"
+     data-max-mb="{{ MAX_UPLOAD_MB }}"
+     {% if visit %}data-visit="{{ visit.id }}"{% endif %}
+     {% if compact %}data-compact{% endif %}>
+
+  <div class="dropzone" data-dropzone>
+    <div class="kategori-picker" role="radiogroup" aria-label="Kategori hasil">
+      {% for value, label in kategori_choices %}
+      <label class="seg"><input type="radio" name="upload-kategori" value="{{ value }}"{% if forloop.first %} checked{% endif %}><span>{{ label }}</span></label>
+      {% endfor %}
+    </div>
+    {% if not compact %}<p class="dz-text">Taruh foto di sini, atau</p>{% endif %}
+    <div class="dz-buttons">
+      {% if compact %}
+      <button type="button" class="btn btn-primary btn-xl" data-pick="camera"><svg class="icon"><use href="#i-camera"/></svg> Ambil foto</button>
+      <button type="button" class="btn btn-secondary btn-xl" data-pick="files"><svg class="icon"><use href="#i-upload"/></svg> Pilih file</button>
+      {% else %}
+      <button type="button" class="btn btn-secondary" data-pick="files"><svg class="icon"><use href="#i-upload"/></svg> Pilih file</button>
+      <button type="button" class="btn btn-secondary" data-pick="camera"><svg class="icon"><use href="#i-camera"/></svg> Ambil foto</button>
+      <button type="button" class="btn btn-ghost" data-show-qr><svg class="icon"><use href="#i-qr"/></svg> Upload via HP</button>
+      {% endif %}
+    </div>
+    <p class="dz-hint">JPEG, PNG, WebP, HEIC, atau PDF · maks {{ MAX_UPLOAD_MB }} MB per file</p>
+    <input type="file" accept="image/*,.heic,.heif,application/pdf" multiple hidden data-input="files">
+    <input type="file" accept="image/*" capture="environment" hidden data-input="camera">
+  </div>
+
+  <div class="upload-queue" data-queue></div>
+
+  <div class="penunjang-toolbar">
+    <div class="filter-chips" data-filter role="group" aria-label="Filter kategori">
+      <button type="button" class="chip-btn active" data-kat="semua">Semua</button>
+      {% for value, label in kategori_choices %}<button type="button" class="chip-btn" data-kat="{{ value }}">{{ label }}</button>{% endfor %}
+    </div>
+    {% if not compact %}
+    <p class="hint">Halaman terbaru di depan. Angka = nomor halaman. Seret <svg class="icon icon-inline"><use href="#i-grip"/></svg> untuk memindahkan, atau gunakan ← →.</p>
+    {% endif %}
+  </div>
+
+  <div class="penunjang-grid" data-grid></div>
+  <div class="empty" data-empty hidden>Belum ada hasil penunjang untuk pasien ini.</div>
+
+  <dialog class="modal modal-sm" data-edit-dialog aria-label="Ubah halaman">
+    <form method="dialog" data-edit-form>
+      <div class="modal-head"><h2>Ubah halaman <span data-edit-page></span></h2>
+        <button type="button" class="icon-btn" data-close aria-label="Tutup"><svg class="icon"><use href="#i-x"/></svg></button></div>
+      <div class="modal-body">
+        <div class="edit-preview" data-edit-preview></div>
+        <div class="rotate-row" data-rotate-row>
+          <button type="button" class="btn btn-secondary btn-sm" data-rotate="-90"><svg class="icon"><use href="#i-rotate-ccw"/></svg> Putar kiri</button>
+          <button type="button" class="btn btn-secondary btn-sm" data-rotate="90"><svg class="icon"><use href="#i-rotate-cw"/></svg> Putar kanan</button>
+        </div>
+        <div class="field">
+          <label for="edit-kategori">Kategori</label>
+          <select class="input" id="edit-kategori" data-edit-kategori>
+            {% for value, label in kategori_choices %}<option value="{{ value }}">{{ label }}</option>{% endfor %}
+          </select>
+        </div>
+        <div class="field">
+          <label for="edit-note">Catatan</label>
+          <textarea class="input" id="edit-note" rows="2" maxlength="500" data-edit-note></textarea>
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="btn btn-ghost" data-close>Batal</button>
+        <button type="submit" class="btn btn-primary">Simpan</button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog class="viewer" data-viewer aria-label="Lihat halaman">
+    <div class="viewer-bar">
+      <span class="viewer-caption" data-viewer-caption></span>
+      <a class="btn btn-ghost btn-sm" data-viewer-open target="_blank" rel="noopener"><svg class="icon"><use href="#i-external"/></svg> Tab baru</a>
+      <button type="button" class="icon-btn" data-viewer-close aria-label="Tutup"><svg class="icon"><use href="#i-x"/></svg></button>
+    </div>
+    <div class="viewer-stage" data-viewer-stage><img data-viewer-img alt=""></div>
+    <button type="button" class="viewer-nav viewer-prev" data-viewer-step="-1" aria-label="Halaman sebelumnya"><svg class="icon"><use href="#i-chevron-left"/></svg></button>
+    <button type="button" class="viewer-nav viewer-next" data-viewer-step="1" aria-label="Halaman berikutnya"><svg class="icon"><use href="#i-chevron-right"/></svg></button>
+  </dialog>
+
+  {% if not compact %}
+  <dialog class="modal modal-sm" data-qr-dialog aria-labelledby="qr-title">
+    <div class="modal-head"><h2 id="qr-title">Upload via HP</h2>
+      <button type="button" class="icon-btn" data-close aria-label="Tutup"><svg class="icon"><use href="#i-x"/></svg></button></div>
+    <div class="modal-body qr-body">
+      <img data-qr-src="{% url 'penunjang_qr' patient.id %}" alt="Kode QR halaman upload" width="240" height="240">
+      <p>Pindai kode ini dengan kamera HP, masuk dengan akun Anda, lalu foto hasil EKG / lab / radiologi milik <b>{{ patient.nama }}</b>.</p>
+      <p class="mono qr-link">{{ mobile_url }}</p>
+      <p class="muted">Halaman ini memuat ulang otomatis saat foto masuk.</p>
+    </div>
+  </dialog>
+  {% endif %}
+</div>

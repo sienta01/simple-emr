@@ -1,0 +1,25 @@
+{% extends "core/base.html" %}
+{% block title %}Rekam Medis{% endblock %}
+{% block content %}
+<div class="page-head">
+  <div>
+    <h1>Rekam Medis</h1>
+    <p class="page-sub" id="rm-count" aria-live="polite">{% include "core/rekam_medis/_count.html" %}</p>
+  </div>
+</div>
+
+<section class="card">
+  <form class="card-toolbar" method="get" role="search" data-live-search="#rm-results">
+    <div class="input-icon grow">
+      <svg class="icon"><use href="#i-search"/></svg>
+      <input type="search" name="q" value="{{ q }}" class="input" placeholder="Cari nama, No. RM, NIK, alamat, atau no. telp…" aria-label="Cari pasien" autocomplete="off" autofocus>
+    </div>
+    <input type="hidden" name="sort" value="{{ sort }}">
+    <button type="submit" class="btn btn-secondary">Cari</button>
+    <a class="btn btn-ghost" href="?sort={{ sort }}" data-live-reset{% if not q %} hidden{% endif %}>Reset</a>
+  </form>
+  <div class="live-results" id="rm-results">
+    {% include "core/rekam_medis/_results.html" %}
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,70 @@
+{% load static %}<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="csrf-token" content="{{ csrf_token }}">
+  <title>{% block title %}{% endblock %} · {{ CLINIC_NAME }}</title>
+  <link rel="icon" href="{% static 'core/favicon.svg' %}" type="image/svg+xml">
+  {% include "core/_theme_init.html" %}
+  <link rel="stylesheet" href="{% static 'core/app.css' %}">
+  <script>try{if(localStorage.getItem('emr-sidebar')==='collapsed')document.documentElement.classList.add('sidebar-collapsed')}catch(e){}</script>
+</head>
+<body class="{% block body_class %}{% endblock %}">
+{% include "core/_icons.html" %}
+<div class="layout">
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-brand">
+      <span class="brand-mark"><svg class="icon"><use href="#i-cross"/></svg></span>
+      <span class="brand-name">{{ CLINIC_NAME }}</span>
+      <button class="icon-btn sidebar-toggle" type="button" data-sidebar-toggle title="Ciutkan / lebarkan menu" aria-label="Ciutkan menu">
+        <svg class="icon"><use href="#i-sidebar"/></svg>
+      </button>
+    </div>
+    <nav class="sidebar-nav" aria-label="Menu utama">
+      {% for item in nav %}
+      <a href="{{ item.url }}" class="{% if item.active %}active{% endif %}" title="{{ item.label }}">
+        <svg class="icon"><use href="#i-{{ item.icon }}"/></svg><span>{{ item.label }}</span>
+      </a>
+      {% endfor %}
+    </nav>
+    <div class="theme-switch">
+      <span class="theme-switch-label" id="theme-label">Tema</span>
+      <div class="theme-options" role="group" aria-labelledby="theme-label">
+        <button type="button" data-theme-set="auto" title="Otomatis (ikuti perangkat)" aria-label="Otomatis" aria-pressed="true"><svg class="icon"><use href="#i-monitor"/></svg></button>
+        <button type="button" data-theme-set="light" title="Terang" aria-label="Terang" aria-pressed="false"><svg class="icon"><use href="#i-sun"/></svg></button>
+        <button type="button" data-theme-set="dark" title="Gelap" aria-label="Gelap" aria-pressed="false"><svg class="icon"><use href="#i-moon"/></svg></button>
+      </div>
+    </div>
+    <div class="sidebar-user">
+      <div class="user-meta">
+        <div class="user-name">{{ user }}</div>
+        <div class="user-roles">{{ user.role_labels|join:", " }}</div>
+      </div>
+      <div class="user-actions">
+        {% if can.penunjang %}<a class="icon-btn" href="{% url 'mobile_home' %}" title="Halaman upload via HP"><svg class="icon"><use href="#i-smartphone"/></svg></a>{% endif %}
+        <a class="icon-btn" href="{% url 'password_change' %}" title="Ganti kata sandi"><svg class="icon"><use href="#i-key"/></svg></a>
+        <form method="post" action="{% url 'logout' %}">{% csrf_token %}
+          <button class="icon-btn" type="submit" title="Keluar"><svg class="icon"><use href="#i-logout"/></svg></button>
+        </form>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-scrim" data-sidebar-close></div>
+  <div class="main">
+    <header class="topbar">
+      <button class="icon-btn" type="button" data-sidebar-open aria-label="Buka menu"><svg class="icon"><use href="#i-menu"/></svg></button>
+      <span class="topbar-title">{{ CLINIC_NAME }}</span>
+    </header>
+    <main class="content {% block content_class %}{% endblock %}">
+      {% block content %}{% endblock %}
+    </main>
+  </div>
+</div>
+<div class="toasts" id="toasts" aria-live="polite">
+  {% for message in messages %}<div class="toast toast-{{ message.tags }}">{{ message }}</div>{% endfor %}
+</div>
+<script src="{% static 'core/app.js' %}"></script>
+{% block scripts %}{% endblock %}
+</body>
+</html>

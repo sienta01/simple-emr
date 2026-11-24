@@ -1,0 +1,42 @@
+<section class="identity{% if patient.has_allergy %} has-allergy{% endif %}" aria-label="Identitas pasien">
+  <div class="id-col id-main">
+    <button type="button" class="id-photo{% if not patient.foto %} is-empty{% endif %}"
+            data-foto-open data-patient-id="{{ patient.id }}" data-patient-name="{{ patient.nama }}"
+            title="{% if can.patient_edit %}Foto pasien — klik untuk mengambil atau mengganti{% else %}Lihat foto{% endif %}"
+            {% if not patient.foto and not can.patient_edit %}disabled{% endif %}>
+      <img data-foto-thumb alt="Foto {{ patient.nama }}"{% if patient.foto %} src="{{ patient.foto_url }}"{% else %} hidden{% endif %}>
+      <span class="id-photo-empty" data-foto-thumb-empty{% if patient.foto %} hidden{% endif %}><svg class="icon"><use href="#i-camera"/></svg>Foto</span>
+    </button>
+    <div class="id-main-text">
+      <div class="id-name">{{ patient.nama }}</div>
+      <div class="id-line id-strong">{{ patient.jk_umur }}</div>
+      <div class="id-line mono">RM {{ patient.no_rm }}</div>
+    </div>
+  </div>
+  <div class="id-col">
+    <div class="id-line">{{ patient.ttl }}</div>
+    <div class="id-line">{% if patient.no_telp %}{{ patient.no_telp }}{% else %}<span class="muted">Tidak ada no. telp</span>{% endif %}</div>
+    <div class="id-line">{{ patient.alamat }}</div>
+  </div>
+  {% if show_details %}
+  <div class="id-col id-extra">
+    <div class="id-line"><span class="id-key">NIK</span> {% if patient.nik %}<span class="mono">{{ patient.nik }}</span>{% else %}<span class="text-warn">belum ada</span>{% endif %}</div>
+    <div class="id-line"><span class="id-key">Pekerjaan</span> {{ patient.pekerjaan|default:"—" }}</div>
+    <div class="id-line"><span class="id-key">Wali</span> {{ patient.wali|default:"—" }}</div>
+  </div>
+  {% endif %}
+  <div class="id-col id-allergy">
+    <label class="allergy-label" for="alergi-input"><svg class="icon"><use href="#i-alert"/></svg> ALERGI</label>
+    {% if can.alergi_edit %}
+    <div class="allergy-edit">
+      <input id="alergi-input" class="input allergy-input" value="{{ patient.alergi }}" placeholder="Belum diisi — ketik, lalu Enter"
+             maxlength="500" autocomplete="off" data-alergi-url="{% url 'api_patient_alergi' patient.id %}">
+      <span class="save-state" data-save-state aria-live="polite"></span>
+    </div>
+    {% else %}
+    <div class="allergy-value">{{ patient.alergi|default:"Belum diisi" }}</div>
+    {% endif %}
+  </div>
+</section>
+
+{% include "core/_foto_dialog.html" %}

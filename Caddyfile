@@ -1,0 +1,17 @@
+# HTTPS in front of the app; used by the "caddy" service in docker-compose.yml (see README, HTTPS).
+# EMR_HOST: the addresses people type, comma-separated, e.g. "serverkliniksehat, 192.168.1.10"
+#           (server name, LAN IP and/or domain). Each one gets a certificate. docker-compose.yml
+#           turns the commas into the spaces Caddy expects.
+# EMR_DEFAULT_SNI (set by docker-compose.yml): browsers opening an IP address don't say which address
+#           they want, and behind Docker's port forwarding Caddy can't tell either, so those visits
+#           get the certificate for this address (the IP listed in EMR_HOST).
+# EMR_TLS: "internal" = Caddy signs its own certificates (LAN; install its root.crt on each device),
+#          or an email address = free Let's Encrypt certificate (domain reachable from the internet).
+{
+	default_sni {$EMR_DEFAULT_SNI}
+}
+
+{$EMR_HOST} {
+	tls {$EMR_TLS:internal}
+	reverse_proxy web:8000
+}

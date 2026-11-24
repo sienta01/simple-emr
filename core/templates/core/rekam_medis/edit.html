@@ -1,0 +1,18 @@
+{% extends "core/base.html" %}
+{% block title %}Ubah data · {{ patient.nama }}{% endblock %}
+{% block content %}
+<div class="page-head page-head-tight">
+  <a class="back-link" href="{% url 'rm_detail' patient.id %}"><svg class="icon"><use href="#i-arrow-left"/></svg> {{ patient.nama }}</a>
+</div>
+<section class="card card-narrow">
+  <div class="card-head"><h3>Ubah data pasien</h3></div>
+  <form method="post" novalidate>
+    {% csrf_token %}
+    {% include "core/_patient_fields.html" %}
+    <div class="form-footer">
+      <a class="btn btn-ghost" href="{% url 'rm_detail' patient.id %}">Batal</a>
+      <button type="submit" class="btn btn-primary">Simpan</button>
+    </div>
+  </form>
+</section>
+{% endblock %}

@@ -1,0 +1,34 @@
+{% load static %}<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="csrf-token" content="{{ csrf_token }}">
+  <meta name="theme-color" content="#0f766e">
+  <title>{% block title %}Upload penunjang{% endblock %} · {{ CLINIC_NAME }}</title>
+  <link rel="icon" href="{% static 'core/favicon.svg' %}" type="image/svg+xml">
+  {% include "core/_theme_init.html" %}
+  <link rel="stylesheet" href="{% static 'core/app.css' %}">
+</head>
+<body class="mobile">
+{% include "core/_icons.html" %}
+<header class="m-top">
+  <a class="m-brand" href="{% url 'mobile_home' %}">
+    <span class="brand-mark"><svg class="icon"><use href="#i-cross"/></svg></span>
+    <span><b>{{ CLINIC_NAME }}</b><small>Upload penunjang</small></span>
+  </a>
+  <div class="m-top-actions">
+    <button class="icon-btn" type="button" data-theme-cycle title="Tema: Otomatis" aria-label="Ganti tema"><svg class="icon"><use href="#i-monitor"/></svg></button>
+    <form method="post" action="{% url 'logout' %}">{% csrf_token %}
+      <button class="icon-btn" type="submit" title="Keluar ({{ user }})" aria-label="Keluar"><svg class="icon"><use href="#i-logout"/></svg></button>
+    </form>
+  </div>
+</header>
+<main class="m-content">{% block content %}{% endblock %}</main>
+<div class="toasts" id="toasts" aria-live="polite">
+  {% for message in messages %}<div class="toast toast-{{ message.tags }}">{{ message }}</div>{% endfor %}
+</div>
+<script src="{% static 'core/app.js' %}"></script>
+{% block scripts %}{% endblock %}
+</body>
+</html>

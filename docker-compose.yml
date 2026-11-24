@@ -1,0 +1,66 @@
+name: simple-emr
+
+services:
+  db:
+    image: postgres:17-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-emr}
+      POSTGRES_USER: ${POSTGRES_USER:-emr}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  web:
+    build: .
+    image: simple-emr:latest
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      POSTGRES_HOST: db
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "${WEB_PORT:-8000}:8000"
+    volumes:
+      - media:/app/media
+
+  # HTTPS (needed for the webcam). Starts only with COMPOSE_PROFILES=https in .env; see README.
+  caddy:
+    image: caddy:2-alpine
+    profiles: [https]
+    restart: unless-stopped
+    environment:
+      EMR_HOST: ${EMR_HOST:-}
+      EMR_TLS: ${EMR_TLS:-internal}
+    # Caddy needs the addresses separated by spaces (.env may say "name,ip" or "name, ip"), and the IP
+    # among them as EMR_DEFAULT_SNI for browsers that open the IP (see Caddyfile).
+    entrypoint:
+      - sh
+      - -c
+      - |
+        hosts=$$(echo "$$EMR_HOST" | tr ',' ' ')
+        sni=$$(for h in $$hosts; do case $$h in *[!0-9.]*) ;; *) echo $$h; break ;; esac; done)
+        set -- $$hosts
+        EMR_HOST="$$hosts" EMR_DEFAULT_SNI="$${sni:-$$1}" exec caddy run --config /etc/caddy/Caddyfile --adapter caddyfile
+    depends_on:
+      - web
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy-data:/data
+      - caddy-config:/config
+
+volumes:
+  db-data:
+  media:
+  caddy-data:   # Caddy's certificates, including the root.crt devices must trust
+  caddy-config:

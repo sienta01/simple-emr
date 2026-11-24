@@ -1,0 +1,17 @@
+<div class="form-grid">
+  <div class="field">
+    <label>No. RM</label>
+    <input class="input" value="{% if patient.no_rm %}{{ patient.no_rm }}{% else %}Otomatis{% endif %}" disabled data-no-rm>
+  </div>
+  {% include "core/_field.html" with field=form.nik %}
+  {% include "core/_field.html" with field=form.nama extra_class="span-2" %}
+  {% include "core/_field.html" with field=form.jenis_kelamin extra_class="field-radio" %}
+  {% include "core/_field.html" with field=form.pekerjaan %}
+  {% include "core/_field.html" with field=form.tempat_lahir %}
+  {% include "core/_field.html" with field=form.tanggal_lahir %}
+  {% include "core/_field.html" with field=form.alamat extra_class="span-2" %}
+  {% include "core/_field.html" with field=form.no_telp %}
+  <div class="form-divider span-2">Wali pasien</div>
+  {% include "core/_field.html" with field=form.nama_wali %}
+  {% include "core/_field.html" with field=form.hubungan_wali %}
+</div>

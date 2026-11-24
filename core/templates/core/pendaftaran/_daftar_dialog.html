@@ -1,0 +1,124 @@
+{% load static %}<dialog class="modal modal-lg" id="daftar-dialog"
+        data-search-url="{% url 'api_patient_search' %}"
+        data-create-url="{% url 'api_patient_create' %}"
+        {% if can.patient_edit %}data-update-url="{% url 'api_patient_update' 0 %}"{% endif %}
+        data-nik-url="{% url 'api_patient_nik' 0 %}"
+        data-register-url="{% url 'api_register_visit' %}"
+        {% if can.rekam_medis %}data-card-url="{% url 'api_patient_by_card' %}" data-card-prefix="{{ card_prefix }}"
+        data-jsqr-url="{% static 'core/vendor/jsQR.js' %}"{% endif %}
+        aria-labelledby="daftar-title">
+  <div class="modal-head">
+    <h2 id="daftar-title" data-step-title>Form daftar pasien</h2>
+    <button type="button" class="icon-btn" data-close aria-label="Tutup"><svg class="icon"><use href="#i-x"/></svg></button>
+  </div>
+
+  {# Step 1: find the patient #}
+  <section class="modal-body" data-step="search">
+    <div class="search-row">
+      <div class="input-icon grow">
+        <svg class="icon"><use href="#i-search"/></svg>
+        <input type="search" class="input input-lg" id="px-search" placeholder="Cari nama, No. RM, NIK, atau alamat…" autocomplete="off" aria-label="Cari pasien">
+      </div>
+      {% if can.rekam_medis %}
+      <button type="button" class="btn btn-secondary btn-lg" data-action="scan" title="Baca QR pada kartu periksa pasien dengan kamera">
+        <svg class="icon"><use href="#i-qr"/></svg> Scan kartu
+      </button>
+      {% endif %}
+      <button type="button" class="btn btn-secondary btn-lg" data-action="new-patient" title="Buat pasien baru">
+        <svg class="icon"><use href="#i-plus"/></svg> Pasien baru
+      </button>
+    </div>
+    <div class="table-wrap search-results">
+      <table class="table table-select">
+        <thead><tr><th>No. RM</th><th>Nama</th><th>Alamat</th><th>NIK</th><th class="col-actions"><span class="sr-only">Pilih</span></th></tr></thead>
+        <tbody id="px-results"></tbody>
+      </table>
+      <div class="search-status" id="px-status">
+        <p data-status="hint">Ketik minimal 2 huruf untuk mencari pasien yang sudah pernah terdaftar{% if can.rekam_medis %}, atau scan kartu periksanya{% endif %}.</p>
+        <p data-status="loading" hidden>Mencari…</p>
+        <div data-status="empty" hidden>
+          <p>Pasien tidak ditemukan.</p>
+          <button type="button" class="btn btn-primary" data-action="new-patient"><svg class="icon"><use href="#i-plus"/></svg> Buat pasien baru</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {# Step 1a: read the QR on the patient's card with the webcam (core/static/core/scan.js) #}
+  {% if can.rekam_medis %}
+  <section class="modal-body scan-step" data-step="scan" data-state="starting" hidden>
+    <div class="scan-layout">
+      <div class="scan-stage">
+        <video data-scan-video autoplay playsinline muted></video>
+        <div class="scan-frame" aria-hidden="true"></div>
+        <div class="scan-placeholder" aria-hidden="true">
+          <svg class="icon icon-xl"><use href="#i-qr"/></svg>
+        </div>
+      </div>
+      <div class="scan-side">
+        <div class="scan-card-hint" aria-hidden="true"><i></i><b></b><b></b><b></b></div>
+        <p>Hadapkan <b>QR di pojok kiri atas kartu periksa</b> ke kamera, kira-kira 10–20 cm dari lensa. Pasien langsung terpilih begitu QR terbaca.</p>
+        <p class="muted small">Alat scan barcode USB juga bisa: scan kartu kapan saja di halaman Pendaftaran.</p>
+        <select class="input" data-scan-camera aria-label="Pilih kamera" hidden></select>
+        <div class="scan-status" data-scan-status role="status" aria-live="polite"></div>
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button type="button" class="btn btn-ghost" data-back="search"><svg class="icon"><use href="#i-arrow-left"/></svg> Kembali</button>
+    </div>
+  </section>
+  {% endif %}
+
+  {# Step 1b: new patient, or correcting a found patient's data #}
+  <section class="modal-body" data-step="new edit" hidden>
+    <form id="px-new-form" novalidate autocomplete="off">
+      {% include "core/_patient_fields.html" with patient=None %}
+      <div class="modal-actions">
+        <button type="button" class="btn btn-ghost" data-back="search"><svg class="icon"><use href="#i-arrow-left"/></svg> Kembali</button>
+        <button type="submit" class="btn btn-primary">Simpan &amp; pilih dokter <svg class="icon"><use href="#i-arrow-right"/></svg></button>
+      </div>
+    </form>
+  </section>
+
+  {# Step 2: doctor #}
+  <section class="modal-body" data-step="doctor" hidden>
+    <div class="selected-patient" data-selected-patient></div>
+    <div class="today-warning" data-today-warning hidden></div>
+    <fieldset class="doctor-grid">
+      <legend>Pilih dokter</legend>
+      {% for d in doctors %}
+      <label class="doctor-option">
+        <input type="radio" name="doctor" value="{{ d.id }}">
+        <span class="doctor-card"><svg class="icon"><use href="#i-stethoscope"/></svg>{{ d }}</span>
+      </label>
+      {% empty %}
+      <p class="alert alert-warn">Belum ada pengguna dengan peran Dokter. Admin perlu menambahkannya di menu Pengguna.</p>
+      {% endfor %}
+    </fieldset>
+    <div class="modal-actions">
+      <button type="button" class="btn btn-ghost" data-back="search"><svg class="icon"><use href="#i-arrow-left"/></svg> Ganti pasien</button>
+      <button type="button" class="btn btn-primary btn-lg" data-action="register">Daftarkan</button>
+    </div>
+  </section>
+</dialog>
+
+{# NIK reminder: shown for returning patients whose NIK is still empty #}
+<dialog class="modal modal-sm" id="nik-dialog" aria-labelledby="nik-title">
+  <form method="dialog" id="nik-form" novalidate>
+    <div class="modal-head">
+      <h2 id="nik-title">NIK belum diisi</h2>
+    </div>
+    <div class="modal-body">
+      <p class="muted">Pasien <b data-nik-name></b> belum memiliki NIK. Minta KTP/KK pasien lalu isi NIK di bawah. Jika tidak membawa KTP, lewati — pengingat ini muncul lagi pada kunjungan berikutnya.</p>
+      <div class="field">
+        <label for="nik-input">NIK</label>
+        <input class="input input-lg mono" id="nik-input" inputmode="numeric" maxlength="16" autocomplete="off" placeholder="16 digit">
+        <div class="field-error" data-nik-error></div>
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button type="button" class="btn btn-ghost" data-nik-skip>Lewati</button>
+      <button type="submit" class="btn btn-primary">Simpan NIK</button>
+    </div>
+  </form>
+</dialog>

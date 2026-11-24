@@ -1,0 +1,44 @@
+{% if riwayat %}
+<div class="table-wrap riwayat-wrap">
+  <table class="table riwayat{% if copyable %} riwayat-copyable{% endif %}">
+    <thead>
+      <tr>
+        <th class="col-date">Tgl</th>
+        <th>S</th>
+        <th>O</th>
+        <th>A</th>
+        <th class="col-icd">ICD-X</th>
+        <th>P</th>
+        <th class="col-author">Penulis</th>
+      </tr>
+    </thead>
+    {% for v in riwayat %}
+    <tbody class="riwayat-visit" data-visit="{{ v.id }}">
+      <tr class="riwayat-row" title="Klik untuk menampilkan / menyembunyikan teks lengkap">
+        <td class="col-date"><div class="mono">{{ v.tanggal|date:"d-m-Y" }}</div></td>
+        <td><div class="clamp">{{ v.subjective }}</div></td>
+        <td><div class="clamp">{{ v.objective }}</div></td>
+        <td><div class="clamp">{{ v.assessment }}</div></td>
+        <td class="col-icd">
+          <div class="clamp clamp-icd" title="{% for d in v.diagnoses.all %}{{ d }}{% if not forloop.last %}&#10;{% endif %}{% endfor %}">{% for d in v.diagnoses.all %}<span class="dx">{% if d.code %}<b>{{ d.code }}</b> {% endif %}{{ d.name }}</span>{% empty %}<span class="muted">—</span>{% endfor %}</div>
+        </td>
+        <td><div class="clamp">{{ v.plan }}</div></td>
+        <td class="col-author">{% include "core/_riwayat_author.html" %}</td>
+      </tr>
+      {% if copyable %}
+      <tr class="copy-row">
+        <td><button type="button" class="copy-btn" data-copy="all" title="Salin S, O, A, ICD-X, dan P ke form"><svg class="icon"><use href="#i-copy"/></svg> Semua</button></td>
+        <td><button type="button" class="copy-btn" data-copy="s" title="Salin S ke form"><svg class="icon"><use href="#i-copy"/></svg> S</button></td>
+        <td><button type="button" class="copy-btn" data-copy="o" title="Salin O ke form"><svg class="icon"><use href="#i-copy"/></svg> O</button></td>
+        <td colspan="2"><button type="button" class="copy-btn copy-btn-wide" data-copy="a" title="Salin asesmen dan ICD-X ke form"><svg class="icon"><use href="#i-copy"/></svg> A + ICD-X</button></td>
+        <td><button type="button" class="copy-btn" data-copy="p" title="Salin P ke form"><svg class="icon"><use href="#i-copy"/></svg> P</button></td>
+        <td></td>
+      </tr>
+      {% endif %}
+    </tbody>
+    {% endfor %}
+  </table>
+</div>
+{% else %}
+<div class="empty">Belum ada riwayat pemeriksaan sebelumnya.</div>
+{% endif %}

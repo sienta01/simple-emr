@@ -1,0 +1,96 @@
+/* Printed patient card (core/templates/core/kartu/cetak.html). The card itself is measured in real
+   millimetres and points: it prints at 85.6 x 53.98 mm, the size of a bank card (ISO/IEC 7810 ID-1).
+   It is paper, so it stays black on white in the dark theme too. */
+
+.kartu-page { min-height: 100vh; background: var(--bg); color: var(--text); }
+
+/* ---------- Toolbar (screen only) ---------- */
+.kartu-bar {
+  position: sticky; top: 0; z-index: 2;
+  display: flex; align-items: center; flex-wrap: wrap; gap: 12px 20px;
+  padding: 12px 20px; background: var(--surface); border-bottom: 1px solid var(--border);
+}
+.kartu-bar-title { margin-right: auto; min-width: 0; }
+.kartu-bar-title b { display: block; font-size: 16px; }
+.kartu-bar-title span { color: var(--text-2); }
+.kartu-paper { display: flex; align-items: center; gap: 10px; }
+.kartu-paper-label { color: var(--text-2); font-weight: 600; }
+
+/* ---------- Preview (screen only: enlarged, with the card's rounded corners) ---------- */
+.kartu-stage { display: flex; flex-direction: column; align-items: center; gap: 24px; padding: 40px 16px 60px; }
+.kartu-zoom { --s: 1.75; width: calc(85.6mm * var(--s)); height: calc(53.98mm * var(--s)); flex: none; }
+@media (max-width: 640px) { .kartu-zoom { --s: 1; } }
+.kartu-zoom .kartu {
+  transform: scale(var(--s)); transform-origin: 0 0;
+  border-radius: 3.18mm; box-shadow: 0 .3mm .8mm rgba(16, 24, 40, .14), 0 2mm 6mm rgba(16, 24, 40, .12);
+}
+.kartu-help { max-width: 640px; margin: 0; color: var(--text-2); font-size: 13px; line-height: 1.55; text-align: center; }
+
+/* ---------- The card ---------- */
+.kartu {
+  position: relative; box-sizing: border-box; width: 85.6mm; height: 53.98mm; padding: 2.6mm 3.6mm 2.8mm;
+  display: flex; flex-direction: column; overflow: hidden;
+  background: #fff; color: #000;
+  font-family: Arial, "Helvetica Neue", Helvetica, sans-serif; font-size: 7.6pt; line-height: 1.2;
+  -webkit-print-color-adjust: exact; print-color-adjust: exact;
+}
+.kartu * { box-sizing: border-box; }
+
+.k-head { flex: none; display: flex; align-items: center; gap: 2.6mm; height: 14mm; }
+/* 21 modules of 0.67 mm; the card's white margin around it is the quiet zone (about 4 modules).
+   Turned 180 degrees: readers find a QR code by its three big corner squares, and error correction cannot
+   rebuild a missing one. Upside down, the code's fourth corner (data only, repairable) faces the card's
+   corner, which chips first. Readers read QR codes at any angle. */
+.k-qr { flex: none; width: 14mm; height: 14mm; }
+.k-qr svg { display: block; width: 100%; height: 100%; shape-rendering: crispEdges; transform: rotate(180deg); }
+.k-praktek { flex: 1; min-width: 0; text-align: center; }
+.k-dokter {
+  font-family: "Times New Roman", Times, Georgia, serif; font-size: 12.5pt; font-weight: 700; line-height: 1.1;
+  white-space: nowrap; overflow: hidden;
+}
+.k-alamat { margin-top: .9mm; font-size: 6.6pt; white-space: nowrap; overflow: hidden; }
+.k-wa { display: inline-flex; align-items: center; gap: .9mm; margin-top: .8mm; font-size: 7.8pt; font-weight: 700; }
+.k-wa svg { flex: none; width: 3.1mm; height: 3.1mm; fill: currentColor; }
+
+/* Double rule under the letterhead, as on the old paper card. */
+.k-rule { flex: none; height: .9mm; margin: 1.4mm 0 1.3mm; border-top: .7pt solid #000; border-bottom: .7pt solid #000; }
+
+.k-title {
+  flex: none; margin: 0; text-align: center; font-size: 9.5pt; line-height: 1.1; font-weight: 700; letter-spacing: .05em;
+  text-decoration: underline; text-decoration-thickness: .6pt; text-underline-offset: .55mm;
+}
+
+.k-data {
+  flex: none; display: grid; grid-template-columns: auto 1fr; align-items: baseline; gap: .5mm 1.5mm;
+  margin: 1.3mm 0 1.2mm; font-size: 7.8pt;
+}
+.k-data dt { display: flex; justify-content: space-between; gap: 1.5mm; min-width: 13.5mm; }
+.k-data dt::after { content: ":"; }
+.k-data dd { margin: 0; min-width: 0; font-weight: 700; }
+.k-rm { letter-spacing: .06em; }
+.k-nama { text-transform: uppercase; white-space: nowrap; overflow: hidden; }
+
+.k-note {
+  flex: none; margin: auto 0 0; padding: .65mm 1mm .75mm;
+  border: .7pt solid #000; text-align: center; font-size: 7pt; font-style: italic;
+}
+
+/* Long names and addresses shrink (or wrap) to fit (kartu.js); whatever still does not fit ends in "…". */
+.kartu [data-fit].is-multiline { white-space: normal; overflow: hidden; }
+.kartu [data-fit].is-clamped { text-overflow: ellipsis; }
+.kartu [data-fit].is-multiline.is-clamped { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: var(--lines, 2); }
+
+/* ---------- Print ---------- */
+@media print {
+  html, body { margin: 0 !important; background: #fff !important; }
+  .kartu-page { min-height: 0; }
+  .kartu-bar, .kartu-help { display: none !important; }
+  .kartu-stage { display: block; padding: 0; }
+  .kartu-zoom { width: auto; height: auto; }
+  .kartu-zoom .kartu { transform: none; box-shadow: none; border-radius: 0; break-inside: avoid; }
+  /* Exactly one card-sized page: nothing may spill onto a second, blank one. */
+  html[data-kertas="kartu"], html[data-kertas="kartu"] body { width: 85.6mm; height: 53.98mm; overflow: hidden; }
+  /* On A4 the card prints at real size in the top-left corner, with a thin line to cut along. */
+  /* Drawn just inside the edge: Chrome clips anything outside the page's printable area. */
+  html[data-kertas="a4"] .kartu-zoom .kartu { border-radius: 3.18mm; outline: .2mm solid #8a8a8a; outline-offset: -.2mm; }
+}

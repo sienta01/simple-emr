@@ -1,0 +1,91 @@
+{% extends "core/base.html" %}
+{% block title %}Laporan DM &amp; HT{% endblock %}
+{% block content %}
+<div class="page-head">
+  <div>
+    <h1>Laporan DM &amp; HT</h1>
+    <p class="page-sub">Jejaring fasyankes swasta untuk Puskesmas: pasien yang diperiksa dengan ICD-X {% for label, item in faktor_risiko.items %}{{ item.0 }} ({{ label }}){% if not forloop.last %} atau {% endif %}{% endfor %} pada bulan pelaporan.</p>
+  </div>
+</div>
+
+<section class="card">
+  <form class="card-toolbar report-filters" method="get" novalidate>
+    <div class="field">
+      <label for="{{ form.bulan.id_for_label }}">{{ form.bulan.label }}</label>
+      {{ form.bulan }}
+    </div>
+    <div class="field">
+      <label for="{{ form.dokter.id_for_label }}">{{ form.dokter.label }}</label>
+      {{ form.dokter }}
+    </div>
+    <div class="field grow">
+      <label for="{{ form.puskesmas.id_for_label }}">{{ form.puskesmas.label }}</label>
+      {{ form.puskesmas }}
+    </div>
+    <div class="field">
+      <label for="{{ form.usia_min.id_for_label }}">Usia (tahun)</label>
+      <div class="report-age">{{ form.usia_min }}<span aria-hidden="true">–</span>{{ form.usia_max }}</div>
+    </div>
+    <div class="report-actions">
+      <button type="submit" class="btn btn-secondary">Tampilkan</button>
+      <button type="submit" class="btn btn-primary" name="unduh" value="xlsx"{% if not form.is_valid %} disabled{% endif %}>
+        <svg class="icon"><use href="#i-download"/></svg>Unduh Excel
+      </button>
+    </div>
+  </form>
+
+  {% if not has_doctors %}
+  <div class="alert alert-warn report-alert">Belum ada akun dengan peran Dokter. Tambahkan di menu Pengguna.</div>
+  {% elif form.errors %}
+  <div class="alert alert-error report-alert">{% for field in form %}{% for e in field.errors %}{{ field.label }}: {{ e }} {% endfor %}{% endfor %}</div>
+  {% endif %}
+
+  {% if form.is_valid %}
+  {% if no_birth_date %}
+  <div class="alert alert-warn report-alert">
+    {{ no_birth_date|length }} pasien tidak masuk laporan karena tanggal lahirnya kosong (usia tidak dapat dihitung):
+    {% for p in no_birth_date %}<a href="{% url 'rm_edit' p.id %}">{{ p.nama }} ({{ p.no_rm }})</a>{% if not forloop.last %}, {% endif %}{% endfor %}.
+    Lengkapi tanggal lahirnya, lalu tampilkan lagi.
+  </div>
+  {% endif %}
+  <div class="report-meta">
+    <span>DPM <b>{{ form.cleaned_data.dokter }}</b></span>
+    <span>Bulan <b>{{ periode }}</b></span>
+    <span>{{ rows|length }} pasien · L {{ counts.L }} · P {{ counts.P }}{% for label, n in counts.faktor %} · {{ label }} {{ n }}{% endfor %}</span>
+  </div>
+  <div class="table-wrap">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>No</th>
+          <th>Nama</th>
+          <th>NIK</th>
+          <th>Alamat</th>
+          <th class="col-center">L</th>
+          <th class="col-center">P</th>
+          <th>Faktor risiko</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for row in rows %}
+        <tr class="row-select" data-dblhref="{% url 'rm_detail' row.patient.id %}" tabindex="0">
+          <td>{{ forloop.counter }}</td>
+          <td class="cell-name">{{ row.patient.nama }}<div class="cell-sub mono">{{ row.patient.no_rm }}</div></td>
+          <td class="mono report-nik">{{ row.nik }}</td>
+          <td class="cell-addr">{{ row.patient.alamat }}</td>
+          <td class="col-center">{% if row.patient.jenis_kelamin == 'L' %}L{% endif %}</td>
+          <td class="col-center">{% if row.patient.jenis_kelamin == 'P' %}P{% endif %}</td>
+          <td>{{ row.faktor_label }}</td>
+        </tr>
+        {% empty %}
+        <tr class="empty-row"><td colspan="7"><div class="empty">Tidak ada pasien DM atau HT dengan usia ini pada bulan tersebut.</div></td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  <div class="card-foot">
+    <span class="hint">Faktor risiko memuat semua diagnosis DM/HT pasien sampai akhir bulan, juga dari kunjungan sebelumnya. Klik dua kali pada baris untuk membuka rekam medis.</span>
+  </div>
+  {% endif %}
+</section>
+{% endblock %}

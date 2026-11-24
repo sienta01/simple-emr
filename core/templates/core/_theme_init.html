@@ -1,0 +1,2 @@
+{# Runs before the stylesheet paints, so a saved light/dark choice never flashes the wrong theme. #}
+<script>try{var t=localStorage.getItem('emr-theme');if(t==='light'||t==='dark')document.documentElement.dataset.theme=t}catch(e){}</script>

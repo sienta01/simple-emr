@@ -1,0 +1,148 @@
+{% extends "core/base.html" %}
+{% load static %}
+{% block title %}{{ patient.nama }} · Pemeriksaan{% endblock %}
+{% block content %}
+<div class="page-head page-head-tight">
+  <a class="back-link" href="{{ back_url }}"><svg class="icon"><use href="#i-arrow-left"/></svg> Antrian pemeriksaan</a>
+  <div class="visit-meta">
+    Antrian <b>No. {{ visit.no_antrian }}</b> · {{ visit.doctor }} · {{ visit.tanggal|date:"j M Y" }} · daftar {{ visit.registered_at|time:"H:i" }}
+    <span class="badge badge-{{ visit.status_key }}">{{ visit.status_label }}</span>
+    {% if visit.is_called and can_write %}
+    <form method="post" action="{% url 'visit_uncall' visit.id %}" class="inline-form">
+      {% csrf_token %}
+      <button type="submit" class="btn btn-ghost btn-sm" title="Pasien belum masuk / salah buka pasien">Kembalikan ke antrian</button>
+    </form>
+    {% endif %}
+  </div>
+</div>
+
+{% include "core/_identity_box.html" %}
+
+<div class="tabs tabs-panel" data-tabs role="tablist">
+  <button type="button" class="tab active" data-tab="soap" role="tab">SOAP</button>
+  {% if can.penunjang %}
+  <button type="button" class="tab" data-tab="penunjang" role="tab">Penunjang <span class="tab-count" data-penunjang-count>{{ penunjang_count }}</span></button>
+  {% endif %}
+  <button type="button" class="tab" data-tab="tindakan" role="tab">Tindakan <span class="tab-count" data-px-count hidden></span></button>
+</div>
+
+<div data-panel="soap">
+  <div class="soap-layout">
+    <form method="post" class="card soap-form" id="soap-form" data-visit="{{ visit.id }}"
+          data-icd-url="{% url 'api_icd10' %}" data-icd9-url="{% url 'api_icd9' %}"{% if not can_write %} data-readonly{% endif %}>
+      {% csrf_token %}
+      <div class="card-head">
+        <h3>Saat ini</h3>
+        <span class="draft-state" data-draft-state></span>
+      </div>
+      {% if form.non_field_errors %}<div class="alert alert-error">{{ form.non_field_errors|join:" " }}</div>{% endif %}
+      {% if not can_write %}
+        <div class="alert alert-info">{% if visit.status == 'batal' %}Kunjungan ini dibatalkan.{% else %}Hanya dokter yang dapat mengisi pemeriksaan. Anda melihat dalam mode baca.{% endif %}</div>
+      {% endif %}
+
+      <div class="soap-field{% if form.subjective.errors %} has-error{% endif %}">
+        <label for="id_subjective"><span class="soap-letter">S</span> Subjektif <span class="req">*</span></label>
+        {{ form.subjective }}
+        <div class="field-error">{{ form.subjective.errors|join:" " }}</div>
+      </div>
+      <div class="soap-field{% if form.objective.errors %} has-error{% endif %}">
+        <label for="id_objective"><span class="soap-letter">O</span> Objektif <span class="req">*</span></label>
+        {{ form.objective }}
+        <div class="field-error">{{ form.objective.errors|join:" " }}</div>
+      </div>
+      <div class="soap-field{% if form.assessment.errors %} has-error{% endif %}">
+        <label for="id_assessment"><span class="soap-letter">A</span> Asesmen <span class="req">*</span></label>
+        {{ form.assessment }}
+        <div class="field-error">{{ form.assessment.errors|join:" " }}</div>
+      </div>
+      <div class="soap-field{% if form.diagnoses.errors %} has-error{% endif %}">
+        <label for="icd-input"><span class="soap-letter soap-letter-icd">ICD</span> ICD-X <span class="opt">opsional</span></label>
+        <div class="chips-input{% if not can_write %} is-readonly{% endif %}" data-icd>
+          <div class="chips" data-chips></div>
+          {% if can_write %}
+          <input type="text" id="icd-input" class="chips-text" placeholder="Ketik kode atau nama diagnosis…" autocomplete="off"
+                 role="combobox" aria-expanded="false" aria-controls="icd-suggest" aria-autocomplete="list">
+          <div class="suggest" id="icd-suggest" role="listbox" data-suggest hidden></div>
+          {% endif %}
+        </div>
+        {{ form.diagnoses }}
+        <div class="field-error">{{ form.diagnoses.errors|join:" " }}</div>
+      </div>
+      <div class="soap-field{% if form.plan.errors %} has-error{% endif %}">
+        <label for="id_plan"><span class="soap-letter">P</span> Plan <span class="req">*</span></label>
+        {{ form.plan }}
+        <div class="field-error">{{ form.plan.errors|join:" " }}</div>
+      </div>
+      {# Filled from the Tindakan tab. #}
+      {{ form.procedures }}
+
+      {% if visit.examined_at %}
+      <p class="muted small">Terakhir disimpan {{ visit.examined_at|date:"j M Y H:i" }}{% if visit.examined_by %} oleh {{ visit.examined_by }}{% endif %}.</p>
+      {% endif %}
+      {% if can_write %}
+      <div class="form-footer">
+        <span class="muted small">Ctrl + S untuk menyimpan</span>
+        <button type="submit" class="btn btn-primary btn-lg"><svg class="icon"><use href="#i-check"/></svg> Simpan pemeriksaan</button>
+      </div>
+      {% endif %}
+    </form>
+
+    <section class="card riwayat-card">
+      <div class="card-head">
+        <h3>Riwayat</h3>
+        {% if riwayat %}<span class="muted small">{{ riwayat|length }} kunjungan · klik baris untuk teks lengkap</span>{% endif %}
+      </div>
+      {% include "core/_riwayat.html" with copyable=can_write %}
+    </section>
+  </div>
+</div>
+
+{% if can.penunjang %}
+<div data-panel="penunjang" hidden>
+  <section class="card">{% include "core/_penunjang.html" %}</section>
+</div>
+{% endif %}
+
+<div data-panel="tindakan" hidden>
+  <div class="soap-layout">
+    <section class="card soap-form">
+      <div class="card-head">
+        <h3>Saat ini</h3>
+      </div>
+      <div class="soap-field{% if form.procedures.errors %} has-error{% endif %}">
+        <label for="icd9-input"><span class="soap-letter soap-letter-icd">ICD</span> ICD-9-CM <span class="opt">opsional</span></label>
+        <div class="chips-input{% if not can_write %} is-readonly{% endif %}" data-icd9>
+          <div class="chips" data-chips></div>
+          {% if can_write %}
+          <input type="text" id="icd9-input" class="chips-text" placeholder="Ketik kode atau nama tindakan…" autocomplete="off"
+                 role="combobox" aria-expanded="false" aria-controls="icd9-suggest" aria-autocomplete="list">
+          <div class="suggest" id="icd9-suggest" role="listbox" data-suggest hidden></div>
+          {% endif %}
+        </div>
+        <div class="field-error">{{ form.procedures.errors|join:" " }}</div>
+      </div>
+      {% if can_write %}
+      <div class="form-footer">
+        <span class="muted small">Disimpan bersama SOAP · Ctrl + S</span>
+        <button type="submit" form="soap-form" class="btn btn-primary btn-lg"><svg class="icon"><use href="#i-check"/></svg> Simpan pemeriksaan</button>
+      </div>
+      {% endif %}
+    </section>
+
+    <section class="card riwayat-card">
+      <div class="card-head">
+        <h3>Riwayat</h3>
+        {% if riwayat_tindakan %}<span class="muted small">{{ riwayat_tindakan|length }} kunjungan dengan tindakan</span>{% endif %}
+      </div>
+      {% include "core/_riwayat_tindakan.html" with copyable=can_write %}
+    </section>
+  </div>
+</div>
+
+{{ riwayat_data|json_script:"riwayat-data" }}
+{% endblock %}
+{% block scripts %}
+<script src="{% static 'core/soap.js' %}"></script>
+<script src="{% static 'core/foto.js' %}"></script>
+{% if can.penunjang %}<script src="{% static 'core/penunjang.js' %}"></script>{% endif %}
+{% endblock %}

@@ -1,0 +1,13 @@
+{% extends "core/mobile/base.html" %}
+{% load static %}
+{% block title %}{{ patient.nama }}{% endblock %}
+{% block content %}
+<a class="m-back" href="{% url 'mobile_home' %}"><svg class="icon"><use href="#i-arrow-left"/></svg> Pasien lain</a>
+<section class="m-identity">
+  <div class="m-identity-name">{{ patient.nama }}</div>
+  <div class="m-identity-sub">RM {{ patient.no_rm }} · {{ patient.jk_umur }}</div>
+  <div class="m-identity-sub">{{ patient.alamat }}</div>
+</section>
+{% include "core/_penunjang.html" with compact=True %}
+{% endblock %}
+{% block scripts %}<script src="{% static 'core/penunjang.js' %}"></script>{% endblock %}

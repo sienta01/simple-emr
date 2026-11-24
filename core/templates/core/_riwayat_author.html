@@ -1,0 +1,8 @@
+{# Who saved the note; records without one (e.g. imported) fall back to the registered doctor. #}
+<div class="author-name">{% if v.examined_by %}{{ v.examined_by }}{% else %}{{ v.doctor }}{% endif %}</div>
+{% if v.examined_at %}
+{% with saved=v.examined_at|date:"Y-m-d" visit_day=v.tanggal|date:"Y-m-d" %}
+<div class="cell-sub mono">{% if saved == visit_day %}{{ v.examined_at|time:"H:i" }}{% else %}{{ v.examined_at|date:"d-m-Y H:i" }}{% endif %}</div>
+{% endwith %}
+{% endif %}
+{% if v.examined_by and v.examined_by_id != v.doctor_id %}<div class="cell-sub">terdaftar: {{ v.doctor }}</div>{% endif %}

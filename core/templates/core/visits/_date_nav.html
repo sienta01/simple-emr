@@ -1,0 +1,10 @@
+{% load emr %}<div class="date-nav">
+  <a class="btn btn-icon" href="{% qs tanggal=prev_date %}" title="Hari sebelumnya" aria-label="Hari sebelumnya"><svg class="icon"><use href="#i-chevron-left"/></svg></a>
+  <label class="date-pill" title="Pilih tanggal">
+    <svg class="icon"><use href="#i-calendar"/></svg>
+    <input type="date" value="{{ tanggal|date:'Y-m-d' }}" data-date-nav aria-label="Tanggal">
+  </label>
+  <a class="btn btn-icon" href="{% qs tanggal=next_date %}" title="Hari berikutnya" aria-label="Hari berikutnya"><svg class="icon"><use href="#i-chevron-right"/></svg></a>
+  <span class="date-label">{{ tanggal|date:"l, j F Y" }}</span>
+  {% if not is_today %}<a class="btn btn-ghost btn-sm" href="{% qs tanggal=None %}">Hari ini</a>{% endif %}
+</div>
